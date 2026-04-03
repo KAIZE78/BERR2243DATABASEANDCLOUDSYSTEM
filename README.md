@@ -1,7 +1,4 @@
 # EXERCISE2
-F1: http://localhost:1880/#flow/08b62ca19a783dac
-F2: http://localhost:1880/#flow/55b9045b6c49de85
-
 [
     {
         "id": "08b62ca19a783dac",
