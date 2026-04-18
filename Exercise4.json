@@ -1,0 +1,170 @@
+[
+    {
+        "id": "02e86634f6747155",
+        "type": "tab",
+        "label": "Flow (Exercise 4)",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9f7ff7e56f85eae5",
+        "type": "inject",
+        "z": "02e86634f6747155",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"temperature\":25.5,\"sensor\":\"ESP32_01\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 140,
+        "wires": [
+            [
+                "26226de067746968"
+            ]
+        ]
+    },
+    {
+        "id": "26226de067746968",
+        "type": "mqtt out",
+        "z": "02e86634f6747155",
+        "name": "",
+        "topic": "campus/lab1/temperature",
+        "qos": "2",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 790,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "c8835024eb5ae69f",
+        "type": "inject",
+        "z": "02e86634f6747155",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"temperature\":25.5,\"sensor\":\"ESP32_01\"}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 240,
+        "wires": [
+            [
+                "3940faa0282bad5f"
+            ]
+        ]
+    },
+    {
+        "id": "3940faa0282bad5f",
+        "type": "mqtt out",
+        "z": "02e86634f6747155",
+        "name": "",
+        "topic": "campus/lab2/temperature",
+        "qos": "2",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 750,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "93821241a7e3251b",
+        "type": "inject",
+        "z": "02e86634f6747155",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"temperature\":25.5,\"sensor\":\"ESP32_01\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 360,
+        "wires": [
+            [
+                "59a2352248eeecba"
+            ]
+        ]
+    },
+    {
+        "id": "59a2352248eeecba",
+        "type": "mqtt out",
+        "z": "02e86634f6747155",
+        "name": "",
+        "topic": "campus/lab1/humidity",
+        "qos": "2",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 760,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "92072e3765849996",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "host.docker.internal",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
