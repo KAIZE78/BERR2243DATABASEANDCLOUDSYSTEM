@@ -1,0 +1,79 @@
+[
+    {
+        "id": "4a3ae5384e52b8ce",
+        "type": "tab",
+        "label": "Flow (Exercise 5)",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3380031d08aec736",
+        "type": "mqtt in",
+        "z": "4a3ae5384e52b8ce",
+        "name": "",
+        "topic": "campus/qos/test",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "92072e3765849996",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 140,
+        "wires": [
+            [
+                "5183be4336c28b31"
+            ]
+        ]
+    },
+    {
+        "id": "5183be4336c28b31",
+        "type": "debug",
+        "z": "4a3ae5384e52b8ce",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "92072e3765849996",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "host.docker.internal",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
