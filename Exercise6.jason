@@ -220,7 +220,7 @@
         "type": "function",
         "z": "67a72523128580b0",
         "name": "function 4",
-        "func": "msg.payload = msg.req.body.temperature;\n\nreturn msg;",
+        "func": "msg.payload = {\n    temperature: msg.payload.temperature\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -231,7 +231,8 @@
         "y": 520,
         "wires": [
             [
-                "1fd3f076ac6d91ef"
+                "1fd3f076ac6d91ef",
+                "887eddb8f5bc9d11"
             ]
         ]
     },
@@ -318,6 +319,23 @@
         "wires": []
     },
     {
+        "id": "887eddb8f5bc9d11",
+        "type": "debug",
+        "z": "67a72523128580b0",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 620,
+        "wires": []
+    },
+    {
         "id": "67f4bf21cb0cc6a7",
         "type": "mongodb4-client",
         "name": "MongoDB Docker",
@@ -342,7 +360,7 @@
         "uriTabActive": "tab-uri-advanced"
     },
     {
-        "id": "13057e191d3f407a",
+        "id": "b12720b693b15000",
         "type": "global-config",
         "env": [],
         "modules": {
