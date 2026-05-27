@@ -1,0 +1,720 @@
+[
+    {
+        "id": "e729b5254d6e6fcc",
+        "type": "tab",
+        "label": "Flow (Exercise7)",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d99e29366ce122c4",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "2f2c442ea2ce3971"
+            ]
+        ]
+    },
+    {
+        "id": "2f2c442ea2ce3971",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "5b3bdf3370a10bb3"
+            ]
+        ]
+    },
+    {
+        "id": "5b3bdf3370a10bb3",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "dc284fa2c56da97b",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "18d76bee028425df"
+            ]
+        ]
+    },
+    {
+        "id": "dcbf980458be1f74",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 610,
+        "y": 300,
+        "wires": [
+            [
+                "41b8e2b54ec4da8c"
+            ]
+        ]
+    },
+    {
+        "id": "41b8e2b54ec4da8c",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "18d76bee028425df",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "Comparison Operators",
+        "func": "msg.payload = {\n    \"battery\": { \"$gte\": 20, \"$lt\": 90 },\n    \"status\": { \"$ne\": \"maintenance\" }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 300,
+        "wires": [
+            [
+                "dcbf980458be1f74"
+            ]
+        ]
+    },
+    {
+        "id": "d3a8a0a2e0e48ff6",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 440,
+        "wires": [
+            [
+                "2e28f6a23f790c2a"
+            ]
+        ]
+    },
+    {
+        "id": "ea0b22ab26263bbb",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 630,
+        "y": 440,
+        "wires": [
+            [
+                "bd16f7394e4a9efd"
+            ]
+        ]
+    },
+    {
+        "id": "bd16f7394e4a9efd",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "2e28f6a23f790c2a",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "Logical Operators",
+        "func": "msg.payload = {\n    \"$or\": [\n        { \"battery\": { \"$lte\": 15 } },\n        { \"sensors_attached\": { \"$in\": [\"soil_moisture\", \"co2\"] } }\n    ],\n    \"$and\": [\n        { \"status\": \"active\" }\n    ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 440,
+        "wires": [
+            [
+                "ea0b22ab26263bbb"
+            ]
+        ]
+    },
+    {
+        "id": "1677886860eb6089",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 600,
+        "wires": [
+            [
+                "a4a4e088878f3040"
+            ]
+        ]
+    },
+    {
+        "id": "8758678d90c40854",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "updateOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 570,
+        "y": 600,
+        "wires": [
+            [
+                "4c641415f240e5c6"
+            ]
+        ]
+    },
+    {
+        "id": "4c641415f240e5c6",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "a4a4e088878f3040",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "Atomic Field Modifiers",
+        "func": "var filter = {\n    \"device_id\": \"GATEWAY_01\"\n};\n\nvar update = {\n    \"$set\": {\n        \"battery\": 82\n    },\n    \"$inc\": {\n        \"transmission_count\": 1\n    }\n};\n\nmsg.payload = [filter, update];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 600,
+        "wires": [
+            [
+                "8758678d90c40854"
+            ]
+        ]
+    },
+    {
+        "id": "0276a4834750d904",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 720,
+        "wires": [
+            [
+                "215f98c990675d86"
+            ]
+        ]
+    },
+    {
+        "id": "d8ded1c3e26a7c4a",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 610,
+        "y": 720,
+        "wires": [
+            [
+                "a81dcb7ed6cb642c"
+            ]
+        ]
+    },
+    {
+        "id": "a81dcb7ed6cb642c",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "215f98c990675d86",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "Verify Update",
+        "func": "msg.payload = {\n    \"device_id\": \"GATEWAY_01\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 720,
+        "wires": [
+            [
+                "d8ded1c3e26a7c4a"
+            ]
+        ]
+    },
+    {
+        "id": "5062b2f3ff23d95e",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 860,
+        "wires": [
+            [
+                "616fa8dfb77c4a39"
+            ]
+        ]
+    },
+    {
+        "id": "f835a0f6815832d9",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "updateOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 610,
+        "y": 860,
+        "wires": [
+            [
+                "ad600c345e620b21"
+            ]
+        ]
+    },
+    {
+        "id": "ad600c345e620b21",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "616fa8dfb77c4a39",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "Array Manipulation ($push and $pop)",
+        "func": "var filter = { \"device_id\": \"GATEWAY_01\" };\nvar update = {\n    \"$push\": { \"sensors_attached\": \"light_level\" },\n    \"$pop\": { \"active_warnings\": -1 }\n    // -1 removes the first item, 1 removes the last item\n};\nmsg.payload = [filter, update];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 860,
+        "wires": [
+            [
+                "f835a0f6815832d9"
+            ]
+        ]
+    },
+    {
+        "id": "0b0a3d9522877fcb",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 1000,
+        "wires": [
+            [
+                "0d9e2f7b35e1af4b"
+            ]
+        ]
+    },
+    {
+        "id": "9356aa4b2b4e7651",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "updateOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 630,
+        "y": 1000,
+        "wires": [
+            [
+                "f06a9daf27f3a40d"
+            ]
+        ]
+    },
+    {
+        "id": "f06a9daf27f3a40d",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "0d9e2f7b35e1af4b",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "$addToSet and $pull",
+        "func": "var filter = {\n    \"device_id\": \"GATEWAY_01\"\n};\n\nvar update = {\n    \"$addToSet\": {\n        \"sensors_attached\": \"light_level\"\n    },\n    \"$pull\": {\n        \"active_warnings\": {\n            \"code\": 102\n        }\n    }\n};\n\nmsg.payload = [filter, update];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 1000,
+        "wires": [
+            [
+                "9356aa4b2b4e7651"
+            ]
+        ]
+    },
+    {
+        "id": "3d06e85905ed1156",
+        "type": "inject",
+        "z": "e729b5254d6e6fcc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"GATEWAY_01\",\"battery\":85,\"status\":\"active\",\"sensors_attached\":[\"temperature\",\"humidity\",\"soil_moisture\"],\"active_warnings\":[{\"code\":102,\"severity\":\"low\"},{\"code\":505,\"severity\":\"critical\"}],\"transmission_count\":100}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 1160,
+        "wires": [
+            [
+                "7e0ff25f82cd2ad9"
+            ]
+        ]
+    },
+    {
+        "id": "dc3101114a594fe5",
+        "type": "mongodb4",
+        "z": "e729b5254d6e6fcc",
+        "clientNode": "a10817a66fe935bb",
+        "mode": "collection",
+        "collection": "devices",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 550,
+        "y": 1160,
+        "wires": [
+            [
+                "cb0acca130dcb583"
+            ]
+        ]
+    },
+    {
+        "id": "cb0acca130dcb583",
+        "type": "debug",
+        "z": "e729b5254d6e6fcc",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "7e0ff25f82cd2ad9",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "$elemMatch Query",
+        "func": "msg.payload = {\n    \"active_warnings\": {\n        \"$elemMatch\": {\n            \"code\": { \"$gt\": 500 },\n            \"severity\": \"critical\"\n        }\n    }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 1160,
+        "wires": [
+            [
+                "dc3101114a594fe5"
+            ]
+        ]
+    },
+    {
+        "id": "0d35304912a18e63",
+        "type": "function",
+        "z": "e729b5254d6e6fcc",
+        "name": "function 5",
+        "func": "var filter = {\n    \"device_id\": \"GATEWAY_01\"\n};\n\n\n\nvar update = {\n    \"$pop\": {\n        \"sensors_attached\": -1\n    }\n};\n\nmsg.payload = [filter, update];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a10817a66fe935bb",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "smart_campus",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb://host.docker.internal:27017/smart_campus?directConnection=true",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "25cbb5a0b4e26654",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-mongodb4": "3.4.0"
+        }
+    }
+]
