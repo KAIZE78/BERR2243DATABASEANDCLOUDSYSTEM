@@ -1,0 +1,373 @@
+[
+    {
+        "id": "b8846f5e89ca77e4",
+        "type": "mongodb4",
+        "z": "3d74aef51ca38288",
+        "clientNode": "959326d6c2eb9173",
+        "mode": "collection",
+        "collection": "device_metadata",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 580,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b86767b053bcacf3",
+        "type": "mqtt in",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "topic": "iot/sensor",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "92072e3765849996",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 120,
+        "wires": [
+            [
+                "b8846f5e89ca77e4"
+            ]
+        ]
+    },
+    {
+        "id": "9afd43ee6f1a6196",
+        "type": "inject",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"timestamp\":\"\",\"device_id\":\"ESP32_01\",\"temperature\":25.5,\"humidity\":60,\"led\":\"OFF\"}",
+        "payloadType": "json",
+        "x": 210,
+        "y": 60,
+        "wires": [
+            [
+                "f58bccc5b1a2a857"
+            ]
+        ]
+    },
+    {
+        "id": "1c712f97cbf4fa1e",
+        "type": "mqtt out",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "topic": "iot/sensor",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 660,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f58bccc5b1a2a857",
+        "type": "function",
+        "z": "3d74aef51ca38288",
+        "name": "function 7",
+        "func": "msg.payload = {\n    timestamp: new Date().toLocaleString(\"en-MY\", {\n        timeZone: \"Asia/Kuala_Lumpur\"\n    }),\n    device_id: msg.payload.device_id,\n    temperature: Math.floor(Math.random() * 11) + 20,\n    humidity: Math.floor(Math.random() * 21) + 60,\n    led: msg.payload.led\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 60,
+        "wires": [
+            [
+                "1c712f97cbf4fa1e"
+            ]
+        ]
+    },
+    {
+        "id": "be656d7c49004e48",
+        "type": "inject",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "x": 210,
+        "y": 180,
+        "wires": [
+            [
+                "d6e59b1b2fd52b22"
+            ]
+        ]
+    },
+    {
+        "id": "881bc922ea9475a0",
+        "type": "mqtt out",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "topic": "iot/command",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 710,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "e01c33c0e30dec00",
+        "type": "function",
+        "z": "3d74aef51ca38288",
+        "name": "function 8",
+        "func": "const filter = {\n    device_id: msg.payload.device_id\n};\n\nconst update = {\n    $set: {\n        led: msg.payload.led\n    }\n};\n\nconst options = {\n    sort: { timestamp: -1 }\n};\n\nmsg.payload = [filter, update, options];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "1cfa26994dad6eb3"
+            ]
+        ]
+    },
+    {
+        "id": "1cfa26994dad6eb3",
+        "type": "mongodb4",
+        "z": "3d74aef51ca38288",
+        "clientNode": "959326d6c2eb9173",
+        "mode": "collection",
+        "collection": "device_metadata",
+        "operation": "findOneAndUpdate",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 670,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b4e2ad1aa7fbba98",
+        "type": "mqtt in",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "topic": "iot/command",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "92072e3765849996",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 270,
+        "y": 340,
+        "wires": [
+            [
+                "e01c33c0e30dec00"
+            ]
+        ]
+    },
+    {
+        "id": "d6e59b1b2fd52b22",
+        "type": "function",
+        "z": "3d74aef51ca38288",
+        "name": "function 9",
+        "func": "msg.payload = {\n    device_id: \"ESP32_01\",\n    led: \"ON\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 180,
+        "wires": [
+            [
+                "881bc922ea9475a0"
+            ]
+        ]
+    },
+    {
+        "id": "add2a738f9984447",
+        "type": "inject",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 210,
+        "y": 240,
+        "wires": [
+            [
+                "a0be3e8f6a1c4465"
+            ]
+        ]
+    },
+    {
+        "id": "f04d02e23a6712e3",
+        "type": "mqtt out",
+        "z": "3d74aef51ca38288",
+        "name": "",
+        "topic": "iot/command",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "92072e3765849996",
+        "x": 710,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a0be3e8f6a1c4465",
+        "type": "function",
+        "z": "3d74aef51ca38288",
+        "name": "function 10",
+        "func": "msg.payload = {\n    device_id: \"ESP32_01\",\n    led: \"OFF\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 240,
+        "wires": [
+            [
+                "f04d02e23a6712e3"
+            ]
+        ]
+    },
+    {
+        "id": "959326d6c2eb9173",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "IoT_DB",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb+srv://kzteh3838557:3838557@dcsass.uaddrj5.mongodb.net/?appName=DCSASS",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "92072e3765849996",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "host.docker.internal",
+        "port": "1883",
+        "tls": "3b1acaa8c5e29c25",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3b1acaa8c5e29c25",
+        "type": "tls-config",
+        "name": "",
+        "certType": "files",
+        "cert": "",
+        "key": "",
+        "p12": "",
+        "p12name": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": "",
+        "certEnv": "",
+        "keyEnv": "",
+        "caEnv": ""
+    },
+    {
+        "id": "2dcfa0ddac3ddb12",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-mongodb4": "3.4.0"
+        }
+    }
+]
