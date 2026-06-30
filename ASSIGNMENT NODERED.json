@@ -1,0 +1,693 @@
+[
+    {
+        "id": "3419d10ca13cc54a",
+        "type": "tab",
+        "label": "ASSIGNMENT",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "517744ea16cb60f9",
+        "type": "mqtt in",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "iot/sensor",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "20887d4065f88c52",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 760,
+        "y": 300,
+        "wires": [
+            [
+                "e728a72d239e9421"
+            ]
+        ]
+    },
+    {
+        "id": "a343ddeecb83ccf1",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"device_id\":\"ESP32_01\",\"temperature\":25.5,\"humidity\":60,\"led\":\"OFF\"}",
+        "payloadType": "json",
+        "x": 210,
+        "y": 300,
+        "wires": [
+            [
+                "ae05a2eda2303d06"
+            ]
+        ]
+    },
+    {
+        "id": "f2311caa9009e044",
+        "type": "mqtt out",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "iot/sensor",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "20887d4065f88c52",
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "7fa7acd346455222",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 21",
+        "func": "var raw_data = typeof msg.payload === 'string' ? JSON.parse(msg.payload) : msg.payload;\n\nflow.set(\"temp_sensor_data\", raw_data);\n\nmsg.payload = {\n    \"device_id\": raw_data.device_id\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 300,
+        "wires": [
+            [
+                "f2311caa9009e044"
+            ]
+        ]
+    },
+    {
+        "id": "a508ef8ecdd66ac6",
+        "type": "mongodb4",
+        "z": "3419d10ca13cc54a",
+        "clientNode": "67f4bf21cb0cc6a7",
+        "mode": "db",
+        "collection": "device_metadata",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 770,
+        "y": 240,
+        "wires": [
+            [
+                "7c59e5f37821f9e6"
+            ]
+        ]
+    },
+    {
+        "id": "c0f15656795ca2cb",
+        "type": "mongodb4",
+        "z": "3419d10ca13cc54a",
+        "clientNode": "798b1bbaf99455ed",
+        "mode": "collection",
+        "collection": "data",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 1100,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c59e5f37821f9e6",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 22",
+        "func": "var raw_data = flow.get(\"temp_sensor_data\");\n\nif (!raw_data) {\n    node.error(\"Empty data!\");\n    return null;\n}\n\nif (msg.payload && Array.isArray(msg.payload) && msg.payload.length > 0) {\n\n    var myTimeStr = new Date().toLocaleString(\"en-MY\", {\n        timeZone: \"Asia/Kuala_Lumpur\",\n        hour12: false\n    });\n\n    var ts_document = {\n        \"timestamp\": new Date(),\n        \"local_time\": myTimeStr,\n        \"device_id\": raw_data.device_id,\n        \"temperature\": raw_data.temperature,\n        \"humidity\": raw_data.humidity,\n    };\n\n    flow.set(\"temp_sensor_data\", null);\n\n    msg.payload = ts_document;\n    return msg;\n\n} else {\n    node.warn(\"Without Identification!\");\n    flow.set(\"temp_sensor_data\", null);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 240,
+        "wires": [
+            [
+                "c0f15656795ca2cb"
+            ]
+        ]
+    },
+    {
+        "id": "0ad42efbb23b79e5",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 23",
+        "func": "var raw_data = typeof msg.payload === 'string' ? JSON.parse(msg.payload) : msg.payload;\n\nflow.set(\"temp_sensor_data\", raw_data);\n\nmsg.payload = {\n    \"device_id\": raw_data.device_id\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 240,
+        "wires": [
+            [
+                "a508ef8ecdd66ac6"
+            ]
+        ]
+    },
+    {
+        "id": "3a9a8c2e4030f34a",
+        "type": "mqtt in",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "iot/sensor2",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "20887d4065f88c52",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 240,
+        "wires": [
+            [
+                "e4d7afd0f5ef5295"
+            ]
+        ]
+    },
+    {
+        "id": "9588e208a2f99af0",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 24",
+        "func": "var raw_data = flow.get(\"temp_sensor_data\");\n\nif (!raw_data) {\n    node.error(\"Empty data!\");\n    return null;\n}\n\nif (msg.payload && Array.isArray(msg.payload) && msg.payload.length > 0) {\n\n    var myTimeStr = new Date().toLocaleString(\"en-MY\", {\n        timeZone: \"Asia/Kuala_Lumpur\",\n        hour12: false\n    });\n\n    var ts_document = {\n        \"timestamp\": new Date(),\n        \"local_time\": myTimeStr,\n        \"device_id\": raw_data.device_id,\n        \"temperature\": raw_data.temperature,\n        \"humidity\": raw_data.humidity,\n    };\n\n    flow.set(\"temp_sensor_data\", null);\n\n    msg.payload = ts_document;\n    return msg;\n\n} else {\n    node.warn(\"Without Identification!\");\n    flow.set(\"temp_sensor_data\", null);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 300,
+        "wires": [
+            [
+                "9e44f27a66c1046a"
+            ]
+        ]
+    },
+    {
+        "id": "e4d7afd0f5ef5295",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 25",
+        "func": "msg.payload = {\n    device_id: msg.payload.device_id,\n    temperature: Math.floor(Math.random() * 11) + 20,\n    humidity: Math.floor(Math.random() * 21) + 60,\n    led: msg.payload.led\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "0ad42efbb23b79e5"
+            ]
+        ]
+    },
+    {
+        "id": "ae05a2eda2303d06",
+        "type": "function",
+        "z": "3419d10ca13cc54a",
+        "name": "function 26",
+        "func": "msg.payload = {\n    device_id: msg.payload.device_id,\n    temperature: Math.floor(Math.random() * 11) + 20,\n    humidity: Math.floor(Math.random() * 21) + 60,\n    led: msg.payload.led\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "7fa7acd346455222"
+            ]
+        ]
+    },
+    {
+        "id": "9d18c2a9a29ea6c5",
+        "type": "http in",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "url": "/control-light",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "e63e03bfed87face",
+                "05285ec157c24625"
+            ]
+        ]
+    },
+    {
+        "id": "e63e03bfed87face",
+        "type": "mqtt out",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "device/esp32_c3_01/cmd",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "20887d4065f88c52",
+        "x": 850,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "05285ec157c24625",
+        "type": "http response",
+        "z": "3419d10ca13cc54a",
+        "name": "respone",
+        "statusCode": "200",
+        "headers": {},
+        "x": 820,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "e728a72d239e9421",
+        "type": "mongodb4",
+        "z": "3419d10ca13cc54a",
+        "clientNode": "798b1bbaf99455ed",
+        "mode": "collection",
+        "collection": "device_metadata",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 890,
+        "y": 300,
+        "wires": [
+            [
+                "9588e208a2f99af0"
+            ]
+        ]
+    },
+    {
+        "id": "9e44f27a66c1046a",
+        "type": "mongodb4",
+        "z": "3419d10ca13cc54a",
+        "clientNode": "798b1bbaf99455ed",
+        "mode": "collection",
+        "collection": "data",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 1180,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fe414eac567d2f62",
+        "type": "http in",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "url": "/api/iot",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 490,
+        "y": 120,
+        "wires": [
+            [
+                "0508c6a86b84381b",
+                "d774494fd6f4e961"
+            ]
+        ]
+    },
+    {
+        "id": "0508c6a86b84381b",
+        "type": "mqtt out",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "iot/sensor2",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "20887d4065f88c52",
+        "x": 850,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "d774494fd6f4e961",
+        "type": "http response",
+        "z": "3419d10ca13cc54a",
+        "name": "respone",
+        "statusCode": "200",
+        "headers": {},
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c28b34048548fefc",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "START",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"cmd\":\"START\"}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 660,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "efab97d6d3850b88",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "BLINK",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"cmd\":\"BLINK\"}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 780,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "a9b472160daa3246",
+        "type": "mqtt out",
+        "z": "3419d10ca13cc54a",
+        "name": "",
+        "topic": "device/esp32_c3_01/cmd",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "20887d4065f88c52",
+        "x": 870,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "940b56549319c501",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "CHOOSE COLOUR BLINK",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"cmd\":\"BLINK\",\"colors\":\"CYAN,BLUE\"}",
+        "payloadType": "json",
+        "x": 510,
+        "y": 820,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "8173dab7797c4a08",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "SLOW",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"speed\":\"SLOW\"}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 940,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "437b01d8a50bce30",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "FAST",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"speed\":\"FAST\"}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 860,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "2d8a9a1417595a6b",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "STOP",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"cmd\":\"STOP\"}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 700,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "5f574c11f1230d3b",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "CHOOSE COLOUR",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"cmd\":\"CYAN\"}",
+        "payloadType": "json",
+        "x": 530,
+        "y": 740,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "1012b69c3371a98c",
+        "type": "inject",
+        "z": "3419d10ca13cc54a",
+        "name": "NORMAL",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"speed\":\"NORMAL\"}",
+        "payloadType": "json",
+        "x": 560,
+        "y": 900,
+        "wires": [
+            [
+                "a9b472160daa3246"
+            ]
+        ]
+    },
+    {
+        "id": "20887d4065f88c52",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "z661651a.ala.asia-southeast1.emqxsl.com",
+        "port": "8883",
+        "tls": "",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "67f4bf21cb0cc6a7",
+        "type": "mongodb4-client",
+        "name": "MongoDB Docker",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "smart_campus",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb://host.docker.internal:27017/smart_campus?directConnection=true",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "798b1bbaf99455ed",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "IoT_DB",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb+srv://nodered231546:231546@dcsass.uaddrj5.mongodb.net/?appName=DCSASS",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "6df1552939da7d2c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-mongodb4": "3.4.0"
+        }
+    }
+]
